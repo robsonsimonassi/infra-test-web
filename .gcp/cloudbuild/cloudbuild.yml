@@ -1,0 +1,80 @@
+steps:
+  - name: 'gcr.io/cloud-builders/git'
+    secretEnv: ['SSH_KEY']
+    entrypoint: 'bash'
+    args:
+      - -c
+      - |
+        echo "$$SSH_KEY" >> /root/.ssh/id_rsa
+        chmod 400 /root/.ssh/id_rsa
+        cp /workspace/.gcp/known_hosts.github /root/.ssh/known_hosts
+        cp /workspace/.gcp/config_id_rsa /root/.ssh/config
+        chmod 400 /root/.ssh/config
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+
+  - name: 'node:16.10.0'
+    entrypoint: 'yarn'
+    volumes:
+      - name: 'ssh'
+        path: /root/.ssh
+    id: Yarn
+
+  - name: 'node:16.10.0'
+    entrypoint: 'yarn'
+    args: ['build']
+    waitFor:
+      - Yarn
+    id: YarnBuild
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '--no-cache'
+      - '-t'
+      - '$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
+      - .
+      - '-f'
+      - Dockerfile
+    waitFor:
+      - YarnBuild
+    id: Build
+
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - '$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
+    waitFor:
+      - Build
+    id: Push
+
+  - name: 'gcr.io/cloud-builders/gke-deploy'
+    args:
+      - run
+      - '--filename=$_K8S_FILES'
+      - '--image=$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
+      - '--location=$_CLOUD_RUN_REGION'
+      - '--cluster=$_CLOUD_CLUSTER_NAME'
+    waitFor:
+      - Push
+    id: Deploy
+
+images:
+  - '$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
+  - '$_CONTAINER_REPOSITORY/$REPO_NAME:latest'
+options:
+  substitutionOption: ALLOW_LOOSE
+
+availableSecrets:
+  secretManager:
+    - versionName: $_SECRET_SSH_KEY
+      env: 'SSH_KEY'
+
+substitutions:
+  _CONTAINER_REPOSITORY: ''
+  _CLOUD_RUN_REGION: ''
+  _CLOUD_CLUSTER_NAME: ''
+  _K8S_FILES: ''
+  _SECRET_SSH_KEY: ''
+

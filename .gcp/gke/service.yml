@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-web-service
+#  annotations:
+#    service.beta.kubernetes.io/do-loadbalancer-name: 'staging-client-web-lb'
+#    service.beta.kubernetes.io/do-loadbalancer-hostname: 'staging.doji.co'
+#    service.beta.kubernetes.io/do-loadbalancer-healthcheck-protocol: 'http'
+#    service.beta.kubernetes.io/do-loadbalancer-healthcheck-path: '/'
+#    service.beta.kubernetes.io/do-loadbalancer-healthcheck-check-interval-seconds: '3'
+#    service.beta.kubernetes.io/do-loadbalancer-healthcheck-response-timeout-seconds: '5'
+#    service.beta.kubernetes.io/do-loadbalancer-healthcheck-unhealthy-threshold: '3'
+#    service.beta.kubernetes.io/do-loadbalancer-healthcheck-healthy-threshold: '5'
+#    service.beta.kubernetes.io/do-loadbalancer-http-ports: '80'
+#    service.beta.kubernetes.io/do-loadbalancer-tls-ports: '443'
+#    service.beta.kubernetes.io/do-loadbalancer-certificate-id: 'a6d5fde0-fd9e-4fa1-b743-0c551cec2927'
+#    service.beta.kubernetes.io/do-loadbalancer-redirect-http-to-https: 'true'
+#    service.beta.kubernetes.io/do-loadbalancer-enable-proxy-protocol: "true"
+spec:
+  type: LoadBalancer
+  selector:
+    app: client-web
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
+    - name: https
+      protocol: TCP
+      port: 443
+      targetPort: 3000
