@@ -1,10 +1,18 @@
 steps:
 
-  - name: 'gcr.io/cloud-builders/npm'
+  - name: 'node:18.13.0'
+    entrypoint: 'npm'
+    args:
+      - 'install'
+    id: NpmInstall
+
+  - name: 'node:18.13.0'
+    entrypoint: 'npm'
     args:
       - 'run'
       - 'build'
-    dir: 'src'
+    waitFor:
+      - NpmInstall
     id: NpmBuild
 
   - name: gcr.io/cloud-builders/docker
