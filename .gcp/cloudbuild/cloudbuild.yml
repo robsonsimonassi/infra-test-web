@@ -36,6 +36,11 @@ steps:
 #      - Build
 #    id: Push
 
+  - name: 'ubuntu'
+    args: [ 'bash','-c','sed -i "s,DOCKER_IMAGE,us-central1-docker.pkg.dev/doji-stg/stg-doji-docker-artifact/infra-test-web:b630d40," deployment.yaml' ]
+    id: 'set test core image in yamls'
+
+
   - name: 'gcr.io/cloud-builders/gke-deploy'
     args:
       - run
