@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: client-web
-          image: us-central1-docker.pkg.dev/doji-stg/stg-doji-docker-artifact/doji-client-web:latest
+          image: us-central1-docker.pkg.dev/doji-stg/stg-doji-docker-artifact/infra-test-web:b630d40
           env:
             - name: ENVIRONMENT
               value: 'staging'

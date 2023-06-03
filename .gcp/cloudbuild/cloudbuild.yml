@@ -1,40 +1,40 @@
 steps:
 
-  - name: 'node:18.13.0'
-    entrypoint: 'npm'
-    args:
-      - 'install'
-    id: NpmInstall
-
-  - name: 'node:18.13.0'
-    entrypoint: 'npm'
-    args:
-      - 'run'
-      - 'build'
-    waitFor:
-      - NpmInstall
-    id: NpmBuild
-
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - '--no-cache'
-      - '-t'
-      - '$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
-      - .
-      - '-f'
-      - Dockerfile
-    waitFor:
-      - NpmBuild
-    id: Build
-
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - '$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
-    waitFor:
-      - Build
-    id: Push
+#  - name: 'node:18.13.0'
+#    entrypoint: 'npm'
+#    args:
+#      - 'install'
+#    id: NpmInstall
+#
+#  - name: 'node:18.13.0'
+#    entrypoint: 'npm'
+#    args:
+#      - 'run'
+#      - 'build'
+#    waitFor:
+#      - NpmInstall
+#    id: NpmBuild
+#
+#  - name: gcr.io/cloud-builders/docker
+#    args:
+#      - build
+#      - '--no-cache'
+#      - '-t'
+#      - '$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
+#      - .
+#      - '-f'
+#      - Dockerfile
+#    waitFor:
+#      - NpmBuild
+#    id: Build
+#
+#  - name: gcr.io/cloud-builders/docker
+#    args:
+#      - push
+#      - '$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
+#    waitFor:
+#      - Build
+#    id: Push
 
   - name: 'gcr.io/cloud-builders/gke-deploy'
     args:
