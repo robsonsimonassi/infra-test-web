@@ -37,7 +37,7 @@ steps:
 #    id: Push
 
   - name: 'ubuntu'
-    args: [ 'bash','-c','sed -i "s,DOCKER_IMAGE,us-central1-docker.pkg.dev/doji-stg/stg-doji-docker-artifact/infra-test-web:b630d40," deployment.yaml' ]
+    args: [ 'bash','-c','sed -i "s,DOCKER_IMAGE,us-central1-docker.pkg.dev/doji-stg/stg-doji-docker-artifact/infra-test-web:b630d40," $_K8S_FILES/deployment.yaml' ]
     id: 'set test core image in yamls'
 
 
