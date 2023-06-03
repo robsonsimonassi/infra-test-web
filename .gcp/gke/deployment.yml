@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: infra-test-web
-          image: $_IMAGE
+          image: $LOCATION-docker.pkg.dev/$GCLOUD_PROJECT/stg-doji-docker-artifact/infra-test-web:b630d40
           env:
             - name: ENVIRONMENT
               value: 'staging'
