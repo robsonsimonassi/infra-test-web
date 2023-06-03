@@ -43,8 +43,8 @@ steps:
       - '--image=$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
       - '--location=$_CLOUD_RUN_REGION'
       - '--cluster=$_CLOUD_CLUSTER_NAME'
-    waitFor:
-      - Push
+#    waitFor:
+#      - Push
     id: Deploy
 
 images:
