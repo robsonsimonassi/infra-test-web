@@ -39,7 +39,7 @@ steps:
   - name: 'gcr.io/cloud-builders/gke-deploy'
     args:
       - run
-      - '--filename=$_K8S_FILES'
+#      - '--filename=$_K8S_FILES'
       - '--image=us-central1-docker.pkg.dev/doji-stg/stg-doji-docker-artifact/infra-test-web:b630d40'
       - '--location=$_CLOUD_RUN_REGION'
       - '--cluster=$_CLOUD_CLUSTER_NAME'
