@@ -6,11 +6,11 @@ metadata:
   labels:
     app.kubernetes.io/managed-by: "gcp-cloud-build-deploy"
 spec:
-  ports:
-    - protocol: "TCP"
-      port: 80
-      targetPort: 3000
   selector:
     app: "infra-test-web"
   type: "LoadBalancer"
   loadBalancerIP: ""
+  ports:
+    - protocol: "TCP"
+      port: 80
+      targetPort: 3000
