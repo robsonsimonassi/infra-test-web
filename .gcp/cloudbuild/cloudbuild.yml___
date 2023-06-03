@@ -1,0 +1,47 @@
+steps:
+  # Build my-app image
+#  - name: gcr.io/cloud_builders/docker
+#    args:
+#      - build
+#      - -t
+#      - gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA
+#      - .
+#
+#  # Push my-app image to Google Cloud Registry
+#  - name: gcr.io/cloud-builders/docker
+#    args:
+#      - push
+#      - gcr.io/$PROJECT_ID/my-app:$COMMIT_SHA
+
+  # Configure a kubectl workspace for this project
+  - name: gcr.io/cloud-builders/kubectl
+    args:
+      - cluster-info
+    env:
+      - CLOUDSDK_COMPUTE_REGION=$_CLOUD_RUN_REGION
+      - CLOUDSDK_CONTAINER_CLUSTER=$_CLOUD_CLUSTER_NAME
+      - KUBECONFIG=/workspace/.kube/config
+
+  # Deploy with Helm
+  - name: gcr.io/$PROJECT_ID/helm
+    args:
+      - upgrade
+      - -i
+      - my-app
+      - ./kubernetes
+      - --set
+      - image.repository=us-central1-docker.pkg.dev/doji-stg/stg-doji-docker-artifact/infra-test-web:b630d40
+      - -f
+      - ./kubernetes/values.yaml
+    env:
+      - KUBECONFIG=/workspace/.kube/config
+      - TILLERLESS=false
+      - TILLER_NAMESPACE=kube-system
+timeout: 1200s
+
+substitutions:
+  _CONTAINER_REPOSITORY: ''
+  _CLOUD_RUN_REGION: ''
+  _CLOUD_CLUSTER_NAME: ''
+  _K8S_FILES: ''
+  _SECRET_SSH_KEY: ''

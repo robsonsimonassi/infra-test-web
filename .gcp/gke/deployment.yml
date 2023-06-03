@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: infra-test-web
-          image: DOCKER_IMAGE
+          image: $_IMAGE
           env:
             - name: ENVIRONMENT
               value: 'staging'
