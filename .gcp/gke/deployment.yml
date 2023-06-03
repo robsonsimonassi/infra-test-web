@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: client-web-deployment
+  name: infra-test-web
 spec:
   selector:
     matchLabels:
-      app: client-web
+      app: infra-test-web
   replicas: 1
   template:
     metadata:
       labels:
-        app: client-web
+        app: infra-test-web
     spec:
       containers:
-        - name: client-web
+        - name: infra-test-web
           image: us-central1-docker.pkg.dev/doji-stg/stg-doji-docker-artifact/infra-test-web:b630d40
           env:
             - name: ENVIRONMENT
