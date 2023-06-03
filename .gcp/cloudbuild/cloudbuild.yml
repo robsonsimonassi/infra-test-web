@@ -32,7 +32,7 @@ steps:
     args:
       - push
       - '$_CONTAINER_REPOSITORY/$REPO_NAME:latest'
-   waitFor:
+    waitFor:
       - Build
     id: Push
 
