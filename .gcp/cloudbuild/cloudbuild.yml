@@ -40,7 +40,7 @@ steps:
     args:
       - run
       - '--filename=$_K8S_FILES'
-      - '--image=$_CONTAINER_REPOSITORY/$REPO_NAME:$SHORT_SHA'
+      - '--image=us-central1-docker.pkg.dev/doji-stg/stg-doji-docker-artifact/infra-test-web:b630d40'
       - '--location=$_CLOUD_RUN_REGION'
       - '--cluster=$_CLOUD_CLUSTER_NAME'
 #    waitFor:
