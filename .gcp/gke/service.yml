@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: client-web-service
+  name: infra-test-web
 #  annotations:
 #    service.beta.kubernetes.io/do-loadbalancer-name: 'staging-client-web-lb'
 #    service.beta.kubernetes.io/do-loadbalancer-hostname: 'staging.doji.co'
@@ -19,7 +19,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    app: client-web
+    app: infra-test-web
   ports:
     - name: http
       protocol: TCP
